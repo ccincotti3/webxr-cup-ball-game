@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Ball in a cup - Carmen Cincotti</title>
+  <meta name="description" content="Ball in a cup - aframe">
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+
+  <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.2.0/dist/aframe-environment-component.min.js"></script>
+  <script src="js/components/cup.js"></script>
+  <script src="js/components/rope.js"></script>
+</head>
+
+<body>
+  <a-scene environment="preset: forest; dressingAmount: 500" physics='driver: ammo; debug: true; debugDrawMode: 1;'
+    renderer="antialias: true">
+    <a-assets>
+      <a-asset-item id="cup-top-obj" src="/assets/cup_top.gltf"></a-asset-item>
+    </a-assets>
+    <a-entity id="rig" movement-controls>
+      <a-entity id="player" camera position="0 1.6 0" look-controls></a-entity>
+      <a-entity position="0 2 -2" id="rhand" oculus-touch-controls="hand: right; model: false;">
+        <a-gltf-model cup id="cup-top" src="#cup-top-obj">
+        </a-gltf-model>
+        <a-entity rope="connectTo: cup-top"></a-entity>
+        <a-sphere scale="0.05 0.05 0.05" position="0 -1 0"
+          ammo-body="linearDamping: 0.2; mass: 1; type: dynamic; activationState: disableDeactivation;"
+          ammo-shape="fit: manual; type: sphere; sphereRadius: 0.05"
+          ammo-constraint="target: #segment-4; type: hinge; pivot: 0 0.2 0" }></a-sphere>
+      </a-entity>
+      <a-entity id="lhand" oculus-touch-controls="hand: left; model: false;">
+        <a-box position="0 0 -1" scale="0.1 0.1 0.1"> </a-box>
+      </a-entity>
+    </a-entity>
+  </a-scene>
+</body>
+
+</html>
