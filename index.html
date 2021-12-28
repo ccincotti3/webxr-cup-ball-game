@@ -14,29 +14,28 @@
   <script src="https://unpkg.com/aframe-environment-component@1.2.0/dist/aframe-environment-component.min.js"></script>
   <script src="js/components/cup.js"></script>
   <script src="js/components/rope.js"></script>
+  <script src="js/components/target.js"></script>
 </head>
 
 <body>
-  <a-scene environment="preset: forest; dressingAmount: 500" physics='driver: ammo; debug: true; debugDrawMode: 1;'
-    renderer="antialias: true">
+  <a-scene environment="preset: forest; dressingAmount: 500" physics='driver: ammo; debug: true; debugDrawMode: 1;' renderer="antialias: true">
     <a-assets>
+      <!-- <a-asset-item id="scary-person" src="/assets/rigged_man.gltf"></a-asset-item> -->
       <a-asset-item id="cup-top-obj" src="/assets/cup_top.gltf"></a-asset-item>
     </a-assets>
     <a-entity id="rig" movement-controls>
       <a-entity id="player" camera position="0 1.6 0" look-controls></a-entity>
-      <a-entity position="0 2 -2" id="rhand" oculus-touch-controls="hand: right; model: false;">
+      <a-entity position="0 2 -1" id="rhand" oculus-touch-controls="hand: right; model: false;">
         <a-gltf-model cup id="cup-top" src="#cup-top-obj">
+          <a-plane target position="0 -0.03 0" scale=".05 .05 .05" rotation="-90 0 0" ammo-body="type: static; emitCollisionEvents: true; collisionFilterGroup: 4;" ammo-shape="type: hull;" ></a-plane>
+          <a-entity rope="connectTo: cup-top"></a-entity>
         </a-gltf-model>
-        <a-entity rope="connectTo: cup-top"></a-entity>
-        <a-sphere scale="0.05 0.05 0.05" position="0 -1 0"
-          ammo-body="linearDamping: 0.2; mass: 1; type: dynamic; activationState: disableDeactivation;"
-          ammo-shape="fit: manual; type: sphere; sphereRadius: 0.05"
-          ammo-constraint="target: #segment-4; type: hinge; pivot: 0 0.2 0" }></a-sphere>
       </a-entity>
       <a-entity id="lhand" oculus-touch-controls="hand: left; model: false;">
         <a-box position="0 0 -1" scale="0.1 0.1 0.1"> </a-box>
       </a-entity>
     </a-entity>
+    <!-- <a-gltf-model scale="2 2 2" id="scary-person" src="#scary-person" animation-mixer="clip: idle_with_gun"></a-gltf-model> -->
   </a-scene>
 </body>
 
