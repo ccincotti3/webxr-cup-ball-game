@@ -26,7 +26,6 @@ AFRAME.registerComponent("rope", {
     addLength: { type: "number", default: 0 },
   },
   init: function () {
-    console.warn = function () {};
     this.initRope(this.data.initialLength);
   },
 

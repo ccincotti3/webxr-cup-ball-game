@@ -8,3 +8,4 @@ require("./scene.html");
 if (module.hot) {
   module.hot.accept();
 }
+console.warn = function () {};
