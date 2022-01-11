@@ -6,4 +6,12 @@
 <!-- <img id="button-texture" src="assets/wood.png"></img> -->
 
 <!-- MIXINS -->
-<!-- <a-mixin id="font" text="shader: msdf; font: assets/fonts/Dosis_Regular.json; letterSpacing: 1"></a-mixin> -->
+<a-mixin 
+    id="flatButton"
+    material="shader: planeShader; src: button-texture;"
+    geometry="primitive: plane;"
+></a-mixin>
+<a-mixin
+    id="flatButtonFont"
+    text="font: monoid; align: center; width: 1;"
+> </a-mixin>

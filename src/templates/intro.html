@@ -1,15 +1,48 @@
 <a-entity bind__visible="isIntro">
   <a-entity
-    material="shader: planeShader; src: button-texture"
-    geometry="primitive: plane; width: 1; height: .5"
+    mixin="flatButton"
+    geometry="width: .75; height: .375"
     position="0 2 -1"
-    proxy-event="event: click; to: a-scene, #cursorMesh; as: startGame"
+    proxy-event="event: click; to: a-scene; as: startGame"
     raycastable
   >
     <a-entity
-      scale="2 2 2"
-      mixin="font"
-      text="value: PLAY; align: center; width: 1;"
+      scale="4 4 4"
+      mixin="flatButtonFont"
+      text="value: PLAY;"
+    ></a-entity>
+  </a-entity>
+
+  <a-entity
+    mixin="flatButton"
+    geometry="width: .25; height: .125"
+    position="-0.15 1.5 -1"
+    proxy-event="event: click; to: a-scene; as: chooseHandLeft"
+    bind__material="selected: !isRightHand"
+    raycastable
+  >
+    <a-entity
+      mixin="flatButtonFont"
+      text="value: LEFT;"
+    ></a-entity>
+  </a-entity>
+  <a-entity
+    scale="1.3 1.3 1.3"
+    position="0.0 1.62 -1"
+    mixin="flatButtonFont"
+    text="value: HAND;"
+  ></a-entity>
+  <a-entity
+    mixin="flatButton"
+    geometry="width: .25; height: .125"
+    position="0.15 1.5 -1"
+    proxy-event="event: click; to: a-scene; as: chooseHandRight"
+    raycastable
+    bind__material="selected: isRightHand"
+  >
+    <a-entity
+      mixin="flatButtonFont"
+      text="value: RIGHT;"
     ></a-entity>
   </a-entity>
 </a-entity>

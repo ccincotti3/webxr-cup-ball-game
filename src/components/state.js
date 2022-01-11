@@ -13,6 +13,7 @@ AFRAME.registerState({
     timeStart: 0,
     timeElapsed: 0,
     timeRemaining: SECONDS_TO_PLAY,
+    isRightHand: true,
 
     controllerConnected: false,
 
@@ -39,6 +40,12 @@ AFRAME.registerState({
     enableControllerControls: function (state) {
       state.controllerConnected = true;
     },
+    chooseHandLeft: function (state) {
+      state.isRightHand = false
+    },
+    chooseHandRight: function (state) {
+      state.isRightHand = true
+    }
   },
   computeState: function (newState, payload) {
     newState.timeRemaining =
