@@ -1,9 +1,15 @@
-<a-entity>
+<a-entity bind__visible="isIntro">
   <a-entity
-    material="shader: planeShader"
-    geometry="primitive: plane; width: 1.15; height: 0.23"
+    material="shader: planeShader; src: button-texture"
+    geometry="primitive: plane; width: 1; height: .5"
     position="0 2 -1"
+    proxy-event="event: click; to: a-scene, #cursorMesh; as: startGame"
+    raycastable
   >
-    <a-entity text="value: Welcome to Ball Cup Game"></a-entity>
+    <a-entity
+      scale="2 2 2"
+      mixin="font"
+      text="value: PLAY; align: center; width: 1;"
+    ></a-entity>
   </a-entity>
 </a-entity>

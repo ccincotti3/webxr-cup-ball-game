@@ -1,35 +1,17 @@
-<a-entity position="-0.15 2 -2" text="value: Score: "></a-entity>
-<a-entity position="0 2 -2" bind__text="value: score"></a-entity>
-<a-entity position="-.24 1.9 -2" text="value: gameOver: "></a-entity>
-<a-entity position="0 1.9 -2" bind__text="value: gameOver"></a-entity>
-<a-entity position="-.33 1.8 -2" text="value: timeRemaining:"></a-entity>
-<a-entity position="0 1.8 -2" bind__text="value: timeRemaining"></a-entity>
-<a-entity id="rig" movement-controls>
-  <a-entity id="player" camera position="0 1.6 0" look-controls></a-entity>
-  <a-entity
-    position="0 1 0"
-    id="rhand"
-    oculus-touch-controls="hand: right; model: false;"
-  >
-    <a-gltf-model cup id="cup-top" src="#cup-top-obj">
-      <a-plane
-        target
-        scale=".03 .03 .03"
-        rotation="-90 0 0"
-        ammo-body="type: static; emitCollisionEvents: true; collisionFilterGroup: 4;"
-        ammo-shape="type: hull;"
-      >
-      </a-plane>
-      <a-entity bind__rope="initialLength: 5; addLength: score"></a-entity>
-    </a-gltf-model>
-  </a-entity>
+<a-entity bind__visible="isGame">
+  <a-entity position="-0.15 2 -2" text="value: Score: "></a-entity>
+  <a-entity position="0 2 -2" bind__text="value: score"></a-entity>
+  <a-entity position="-.24 1.9 -2" text="value: gameOver: "></a-entity>
+  <a-entity position="0 1.9 -2" bind__text="value: gameOver"></a-entity>
+  <a-entity position="-.33 1.8 -2" text="value: timeRemaining:"></a-entity>
+  <a-entity position="0 1.8 -2" bind__text="value: timeRemaining"></a-entity>
+  <a-plane
+    target
+    scale="40 40"
+    position="0 -0.02 0"
+    rotation="-90 0 0"
+    material="color: green"
+    ammo-body="type: static; collisionFilterMask: 5;"
+    ammo-shape="type: hull;"
+  ></a-plane>
 </a-entity>
-<a-plane
-  target
-  scale="40 40"
-  position="0 -0.02 0"
-  rotation="-90 0 0"
-  material="color: green"
-  ammo-body="type: static; collisionFilterMask: 5;"
-  ammo-shape="type: hull;"
-></a-plane>

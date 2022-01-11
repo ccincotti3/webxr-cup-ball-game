@@ -3,10 +3,58 @@
   environment="preset: forest; dressingAmount: 500"
   physics="driver: ammo;"
   renderer="antialias: true"
+  bind__debug="debugOn"
+  cursor="rayOrigin: mouse"
+  raycaster="far: 5; objects: [raycastable];"
+  bind__raycaster="enabled: !controllerConnected"
 >
   <a-assets>
     <require path="assets.html"></require>
   </a-assets>
   <require path="templates/intro.html"></require>
   <require path="templates/game.html"></require>
+
+  <a-entity id="rig" movement-controls>
+    <a-entity id="player" camera position="0 1.6 0" look-controls></a-entity>
+    {% macro createHand(hand) %}
+    <a-entity
+      id="{{hand}}Hand"
+      position="0 1 0"
+      controller
+      cursor="rayOrigin: entity"
+      raycaster="far: 5; objects: [raycastable];"
+      bind__raycaster="showLine: !isGame && controllerConnected; enabled: !isGame && controllerConnected"
+      laser-controls="model: false; hand:{{hand}}"
+    >
+      <a-box
+        scale="0.1 0.1 0.1"
+        id="cursorMesh{{hand}}"
+        bind__visible="!isGame"
+      >
+      </a-box>
+      <a-gltf-model
+        bind__visible="isGame && '{{hand}}' === 'right'"
+        cup
+        id="{{hand}}CupTop"
+        src="#cup-top-obj"
+      >
+        <a-plane
+          target
+          scale=".03 .03 .03"
+          rotation="-90 0 0"
+          ammo-body="type: static; emitCollisionEvents: true; collisionFilterGroup: 4;"
+          ammo-shape="type: hull;"
+        >
+        </a-plane>
+        <a-entity
+          id="{{hand}}Rope"
+          bind__rope="initialLength: 5; addLength: score"
+        ></a-entity>
+      </a-gltf-model>
+    </a-entity>
+    {% endmacro %} {{ createHand("right") }} {{ createHand("left") }}
+  </a-entity>
+  <a-entity position="1 1 -1" bind__visible="debugOn">
+    <a-entity bind__text="value: mode"></a-entity>
+  </a-entity>
 </a-scene>

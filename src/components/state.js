@@ -1,6 +1,6 @@
 const MODES = {
-  MENU: "menu",
-  PLAY: "play",
+  INTRO: "intro",
+  GAME: "game",
 };
 
 const SECONDS_TO_PLAY = 60;
@@ -8,11 +8,19 @@ const SECONDS_TO_PLAY = 60;
 AFRAME.registerState({
   initialState: {
     score: 0,
-    mode: MODES.MENU,
+    mode: MODES.INTRO,
     gameOver: false,
     timeStart: 0,
     timeElapsed: 0,
     timeRemaining: SECONDS_TO_PLAY,
+
+    controllerConnected: false,
+
+    // game modes
+    isIntro: true,
+    isGame: false,
+
+    debugOn: true,
   },
 
   handlers: {
@@ -25,6 +33,12 @@ AFRAME.registerState({
     setTimeElapsed: function (state, action) {
       state.timeElapsed = action.elapsed;
     },
+    startGame: function (state) {
+      state.mode = MODES.GAME;
+    },
+    enableControllerControls: function (state) {
+      state.controllerConnected = true;
+    },
   },
   computeState: function (newState, payload) {
     newState.timeRemaining =
@@ -34,5 +48,9 @@ AFRAME.registerState({
             SECONDS_TO_PLAY - (newState.timeElapsed - newState.timeStart) / 1000
           );
     newState.gameOver = newState.timeRemaining <= 0;
+
+    // set mode
+    newState.isIntro = newState.mode === MODES.INTRO;
+    newState.isGame = newState.mode === MODES.GAME;
   },
 });

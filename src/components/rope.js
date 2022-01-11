@@ -71,7 +71,7 @@ AFRAME.registerComponent("rope", {
       `${config.radius} ${config.radius} ${config.radius}`
     );
     el.setAttribute("position", "0 -0.2 0.0");
-    el.setAttribute("material", `color: ${config.color}`);
+    el.setAttribute("material", { color: config.color });
     return el;
   },
 

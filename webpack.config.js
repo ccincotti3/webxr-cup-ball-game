@@ -22,6 +22,15 @@ module.exports = {
         use: [
           "aframe-super-hot-html-loader",
           {
+            loader: "super-nunjucks-loader",
+            options: {
+              globals: {
+                IS_PRODUCTION: process.env.NODE_ENV === "production",
+              },
+              path: path.resolve(__dirname, "src"),
+            },
+          },
+          {
             loader: "html-require-loader",
             options: {
               root: path.resolve(__dirname, "src"),
@@ -31,8 +40,8 @@ module.exports = {
       },
       {
         test: /\.glsl$/,
-        loader: 'webpack-glsl-loader'
-      }
+        loader: "webpack-glsl-loader",
+      },
     ],
   },
   resolve: {
