@@ -3,7 +3,7 @@ const MODES = {
   GAME: "game",
 };
 
-const SECONDS_TO_PLAY = 60;
+const SECONDS_TO_PLAY = 5;
 
 AFRAME.registerState({
   initialState: {
@@ -36,6 +36,10 @@ AFRAME.registerState({
     },
     startGame: function (state) {
       state.mode = MODES.GAME;
+      state.gameOver = false;
+      state.score = 0;
+      state.timeStart = state.timeElapsed;
+      state.timeRemaining = SECONDS_TO_PLAY;
     },
     enableControllerControls: function (state) {
       state.controllerConnected = true;

@@ -1,10 +1,70 @@
 <a-entity bind__visible="isGame">
-  <a-entity position="-0.15 2 -2" text="value: Score: "></a-entity>
-  <a-entity position="0 2 -2" bind__text="value: score"></a-entity>
-  <a-entity position="-.24 1.9 -2" text="value: gameOver: "></a-entity>
-  <a-entity position="0 1.9 -2" bind__text="value: gameOver"></a-entity>
-  <a-entity position="-.33 1.8 -2" text="value: timeRemaining:"></a-entity>
-  <a-entity position="0 1.8 -2" bind__text="value: timeRemaining"></a-entity>
+  <a-entity
+    bind__visible="!gameOver"
+    scale="6 6 6"
+    position="0 1.6 -2"
+    lookAt="#player"
+  >
+    <a-entity
+      mixin="primaryFont"
+      position="0 .02 0"
+      text="value: SCORE"
+    ></a-entity>
+    <a-entity
+      mixin="primaryFont"
+      scale="3 3 3"
+      position="0 -0.05 0"
+      bind__text="value: score"
+    ></a-entity>
+    <a-entity
+      mixin="primaryFont"
+      position="-0.1 -0.15 0"
+      text="value: TIME"
+    ></a-entity>
+    <a-entity
+      mixin="primaryFont"
+      position="0 -0.15 0"
+      bind__text="value: timeRemaining"
+    ></a-entity>
+  </a-entity>
+  <a-entity bind__visible="gameOver">
+    <a-entity
+      mixin="flatPanel"
+      geometry="width: 2; height: 2"
+      position="0.0 1.6 -2"
+      material="ratio: 1"
+    >
+      <a-entity scale="5 5 5" position="0 0.5 0">
+        <a-entity
+          mixin="primaryFont"
+          scale="1.4 1.4 1.4"
+          text="value: NICE JOB!;"
+        ></a-entity>
+        <a-entity position="0 -0.06 0">
+          <a-entity
+            mixin="primaryFont"
+            position="-0.02 0 0"
+            text="value: SCORE: "
+          ></a-entity>
+          <a-entity
+            mixin="primaryFont"
+            position="0.07 0 0"
+            bind__text="value: score"
+          ></a-entity>
+        </a-entity>
+        <a-entity
+          mixin="flatPanel"
+          geometry="width: .3; height: .1"
+          position="0 -0.15 0.01"
+          proxy-event="event: click; to: a-scene; as: startGame"
+          raycastable
+          material="selected: true"
+        >
+          <a-entity mixin="primaryFont" text="value: PLAY AGAIN;"></a-entity>
+        </a-entity>
+      </a-entity>
+    </a-entity>
+  </a-entity>
   <a-plane
     target
     scale="40 40"
