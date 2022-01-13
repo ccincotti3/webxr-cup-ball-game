@@ -41,11 +41,11 @@ AFRAME.registerState({
       state.controllerConnected = true;
     },
     chooseHandLeft: function (state) {
-      state.isRightHand = false
+      state.isRightHand = false;
     },
     chooseHandRight: function (state) {
-      state.isRightHand = true
-    }
+      state.isRightHand = true;
+    },
   },
   computeState: function (newState, payload) {
     newState.timeRemaining =

@@ -33,7 +33,7 @@
       >
       </a-box>
       <a-gltf-model
-        bind__visible="isGame && '{{hand}}' === 'right'"
+        bind__visible="isGame && (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand))"
         cup
         id="{{hand}}CupTop"
         src="#cup-top-obj"
