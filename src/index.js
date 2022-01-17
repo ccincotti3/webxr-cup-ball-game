@@ -3,6 +3,7 @@ function requireAll(req) {
 }
 
 require("aframe-proxy-event-component");
+require("aframe-haptics-component");
 require("nunjucks");
 
 requireAll(require.context("./components/", true, /\.js$/));

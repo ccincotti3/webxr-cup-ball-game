@@ -3,25 +3,26 @@ const MODES = {
   GAME: "game",
 };
 
-const SECONDS_TO_PLAY = 5;
+const SECONDS_TO_PLAY = 10;
 
 AFRAME.registerState({
   initialState: {
     score: 0,
     mode: MODES.INTRO,
-    gameOver: false,
+    gameOver: true,
     timeStart: 0,
     timeElapsed: 0,
     timeRemaining: SECONDS_TO_PLAY,
     isRightHand: true,
 
     controllerConnected: false,
+    showCupController: false,
 
     // game modes
     isIntro: true,
     isGame: false,
 
-    debugOn: true,
+    debugOn: false,
   },
 
   handlers: {
@@ -58,10 +59,11 @@ AFRAME.registerState({
         : Math.floor(
             SECONDS_TO_PLAY - (newState.timeElapsed - newState.timeStart) / 1000
           );
-    newState.gameOver = newState.timeRemaining <= 0;
+    newState.gameOver = newState.gameOver || newState.timeRemaining <= 0;
 
     // set mode
     newState.isIntro = newState.mode === MODES.INTRO;
     newState.isGame = newState.mode === MODES.GAME;
+    newState.showCupController = !newState.gameOver;
   },
 });

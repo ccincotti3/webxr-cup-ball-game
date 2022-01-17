@@ -1,7 +1,13 @@
-const getConfig = (totalSegments) => {
+const PHYSICS = {
+  BODY: "ammo-body",
+  SHAPE: "ammo-shape",
+  CONSTRAINT: "ammo-constraint",
+};
+
+const getConfig = (ropeContainerId) => {
   return {
     SEGMENT: {
-      idPrefix: "segment",
+      idPrefix: ropeContainerId + "-segment",
       radius: "0.02",
       collisionFilterGroup: "2",
       collisionFilterMask: "2",
@@ -10,7 +16,7 @@ const getConfig = (totalSegments) => {
       color: "white",
     },
     BALL: {
-      idPrefix: "ball",
+      idPrefix: ropeContainerId + "-ball",
       radius: "0.05",
       collisionFilterGroup: "1",
       collisionFilterMask: "5",
@@ -22,30 +28,30 @@ const getConfig = (totalSegments) => {
 };
 AFRAME.registerComponent("rope", {
   schema: {
-    initialLength: { type: "number", default: 5 },
-    addLength: { type: "number", default: 0 },
+    ropeLength: { type: "number", default: 0 },
+    enabled: { type: "boolean", default: false },
   },
   init: function () {
-    this.initRope(this.data.initialLength);
+    this.ballEl = null;
+    this.initRope(this.data.ropeLength);
   },
 
   update: function (oldData) {
     if (
-      oldData.addLength !== undefined &&
-      oldData.addLength !== this.data.addLength
+      oldData.ropeLength !== undefined &&
+      oldData.ropeLength !== this.data.ropeLength
     ) {
       while (this.el.firstChild) {
-        // Probably can just remove ammo components
-        // https://aframe.io/docs/1.2.0/core/entity.html#removeattribute-componentname-propertyname
+        // This seems like overkill
         this.el.removeChild(this.el.lastChild);
       }
-      this.initRope(this.data.initialLength + this.data.addLength);
+      this.initRope(this.data.ropeLength);
     }
   },
 
   initRope(numSegments) {
-    const ropeConfig = getConfig(numSegments);
     const ropeContainer = this.el;
+    const ropeConfig = getConfig(ropeContainer.id);
 
     let lastId = this.el.parentElement.id;
 
@@ -53,14 +59,15 @@ AFRAME.registerComponent("rope", {
     // TODO: maybe make a pool?
     for (let i = 0; i < numSegments; i++) {
       const el = this.initRopeEl(i, ropeConfig.SEGMENT);
-      this.initRopeElPhysics(el, lastId, ropeConfig.SEGMENT, i);
+      this.addPhysics(el, lastId, ropeConfig.SEGMENT, i);
       ropeContainer.append(el);
       lastId = el.id;
     }
 
-    const ballEl = this.initRopeEl(0, ropeConfig.BALL);
-    this.initRopeElPhysics(ballEl, lastId, ropeConfig.BALL);
-    ropeContainer.append(ballEl);
+    // add ball
+    this.ballEl = this.initRopeEl(0, ropeConfig.BALL);
+    this.addPhysics(this.ballEl, lastId, ropeConfig.BALL);
+    ropeContainer.append(this.ballEl);
   },
 
   initRopeEl(i, config) {
@@ -75,23 +82,29 @@ AFRAME.registerComponent("rope", {
     return el;
   },
 
-  initRopeElPhysics(el, target, config, i = 0) {
+  addPhysics(el, target, config, i = 0) {
     const linearDamping = config.getLinearDamping(i);
     const sphereRadius = config.radius;
     const collisionFilterGroup = config.collisionFilterGroup;
     const collisionFilterMask = config.collisionFilterMask;
     const disableCollision = config.disableCollision;
     el.setAttribute(
-      "ammo-constraint",
+      PHYSICS.CONSTRAINT,
       `target: #${target}; type: hinge; pivot: 0 0.10 0`
     );
     el.setAttribute(
-      "ammo-body",
+      PHYSICS.BODY,
       `disableCollision: ${disableCollision}; collisionFilterGroup: ${collisionFilterGroup}; collisionFilterMask: ${collisionFilterMask}; linearDamping:  ${linearDamping}; mass: 1; type: dynamic; activationState: disableDeactivation;`
     );
     el.setAttribute(
-      "ammo-shape",
+      PHYSICS.SHAPE,
       `fit: manual; type: sphere; sphereRadius: ${sphereRadius}`
     );
+  },
+
+  removePhysics(el) {
+    Object.values(PHYSICS).forEach((prop) => {
+      el.removeAttribute(prop);
+    });
   },
 });

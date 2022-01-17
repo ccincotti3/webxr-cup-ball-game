@@ -23,23 +23,24 @@
       controller
       cursor="rayOrigin: entity"
       raycaster="far: 5; objects: [raycastable];"
-      bind__raycaster="showLine: !isGame && controllerConnected; enabled: !isGame && controllerConnected"
+      bind__raycaster="showLine: !showCupController && controllerConnected; enabled: !showCupController && controllerConnected"
       laser-controls="model: false; hand:{{hand}}"
+      haptics="events: mouseenter, triggerdown, collidestart; dur: 35; force: 0.075"
     >
       <a-box
         scale="0.1 0.1 0.1"
         id="cursorMesh{{hand}}"
-        bind__visible="!isGame"
+        bind__visible="(('{{hand}}' === 'right' && !isRightHand) || ('{{hand}}' === 'left' && isRightHand))"
       >
       </a-box>
       <a-gltf-model
-        bind__visible="isGame && (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand))"
-        cup
+        bind__cup="enabled: showCupController && (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand))"
         id="{{hand}}CupTop"
         src="#cup-top-obj"
       >
         <a-plane
           target
+          id="{{hand}}HitPlane"
           scale=".03 .03 .03"
           rotation="-90 0 0"
           ammo-body="type: static; emitCollisionEvents: true; collisionFilterGroup: 4;"
@@ -48,7 +49,7 @@
         </a-plane>
         <a-entity
           id="{{hand}}Rope"
-          bind__rope="initialLength: 5; addLength: score"
+          bind__rope="enabled: (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand)); ropeLength: 5 + score"
         ></a-entity>
       </a-gltf-model>
     </a-entity>
