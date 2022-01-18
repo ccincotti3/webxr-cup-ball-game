@@ -4,10 +4,12 @@ const MODES = {
 };
 
 const SECONDS_TO_PLAY = 10;
+const STARTING_ROPE_LENGTH = 5;
 
 AFRAME.registerState({
   initialState: {
     score: 0,
+    ropeLength: STARTING_ROPE_LENGTH,
     mode: MODES.INTRO,
     gameOver: true,
     timeStart: 0,
@@ -22,12 +24,12 @@ AFRAME.registerState({
     isIntro: true,
     isGame: false,
 
-    debugOn: false,
+    debugOn: true,
   },
 
   handlers: {
     increaseScore: function (state, action) {
-      state.score += action.points;
+      state.score += 1;
     },
     setGameMode: function (state, action) {
       state.mode = action.mode;
@@ -65,5 +67,6 @@ AFRAME.registerState({
     newState.isIntro = newState.mode === MODES.INTRO;
     newState.isGame = newState.mode === MODES.GAME;
     newState.showCupController = !newState.gameOver;
+    newState.ropeLength = newState.score + STARTING_ROPE_LENGTH
   },
 });

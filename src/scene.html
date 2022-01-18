@@ -16,6 +16,8 @@
 
   <a-entity id="rig" movement-controls>
     <a-entity id="player" camera position="0 1.6 0" look-controls></a-entity>
+    {% macro enableCup(hand) %}showCupController && (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand)){% endmacro %}
+    {% macro enableRaycaster() %}!showCupController && controllerConnected{% endmacro %}
     {% macro createHand(hand) %}
     <a-entity
       id="{{hand}}Hand"
@@ -23,39 +25,39 @@
       controller
       cursor="rayOrigin: entity"
       raycaster="far: 5; objects: [raycastable];"
-      bind__raycaster="showLine: !showCupController && controllerConnected; enabled: !showCupController && controllerConnected"
+      bind__raycaster="showLine: {{ enableRaycaster() }}; enabled: {{ enableRaycaster() }}"
       laser-controls="model: false; hand:{{hand}}"
       haptics="events: mouseenter, triggerdown, collidestart; dur: 35; force: 0.075"
     >
       <a-box
         scale="0.1 0.1 0.1"
         id="cursorMesh{{hand}}"
-        bind__visible="(('{{hand}}' === 'right' && !isRightHand) || ('{{hand}}' === 'left' && isRightHand))"
+        bind__visible="!({{ enableCup(hand) }})"
+        ammo-body="disableCollision: {{ enableCup(hand) }}; type: {{PHYSICS.hand.type}}; emitCollisionEvents: true; collisionFilterMask: {{PHYSICS.hand.mask}}; collisionFilterGroup: {{PHYSICS.hand.mask}};"
+        ammo-shape
+        
       >
       </a-box>
       <a-gltf-model
-        bind__cup="enabled: showCupController && (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand))"
+        bind__cup="enabled: {{ enableCup(hand) }}"
         id="{{hand}}CupTop"
         src="#cup-top-obj"
       >
         <a-plane
-          target
+          proxy-event="event: collidestart; to: a-scene; as: increaseScore"
           id="{{hand}}HitPlane"
           scale=".03 .03 .03"
           rotation="-90 0 0"
-          ammo-body="type: static; emitCollisionEvents: true; collisionFilterGroup: 4;"
-          ammo-shape="type: hull;"
+          ammo-body="type: {{PHYSICS.hitPlane.type}}; emitCollisionEvents: true; collisionFilterMask: {{PHYSICS.hitPlane.mask}}; collisionFilterGroup: {{PHYSICS.hitPlane.group}};"
+          ammo-shape
         >
         </a-plane>
         <a-entity
           id="{{hand}}Rope"
-          bind__rope="enabled: (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand)); ropeLength: 5 + score"
+          bind__rope="enabled: {{ enableCup(hand) }}; ropeLength: ropeLength"
         ></a-entity>
       </a-gltf-model>
     </a-entity>
     {% endmacro %} {{ createHand("right") }} {{ createHand("left") }}
-  </a-entity>
-  <a-entity position="1 1 -1" bind__visible="debugOn">
-    <a-entity bind__text="value: mode"></a-entity>
   </a-entity>
 </a-scene>

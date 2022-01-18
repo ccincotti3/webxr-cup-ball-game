@@ -66,12 +66,11 @@
     </a-entity>
   </a-entity>
   <a-plane
-    target
     scale="40 40"
     position="0 -0.02 0"
     rotation="-90 0 0"
     material="color: green"
-    ammo-body="type: static; collisionFilterMask: 5;"
-    ammo-shape="type: hull;"
+    ammo-body="type: {{ PHYSICS.ground.type }}; collisionFilterGroup: {{ PHYSICS.ground.group}}; collisionFilterMask: {{ PHYSICS.ground.mask }}"
+    ammo-shape
   ></a-plane>
 </a-entity>

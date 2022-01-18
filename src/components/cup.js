@@ -1,3 +1,5 @@
+const PHYSICS = require('../constants/physics.js');
+
 AFRAME.registerComponent("cup", {
   schema: {
     enabled: { type: "boolean", default: false },
@@ -21,8 +23,9 @@ AFRAME.registerComponent("cup", {
     const object3d = this.el.object3D;
     object3d.visible = true;
     this.el.setAttribute("ammo-body", {
-      collisionFilterMask: 1,
-      type: "kinematic",
+      collisionFilterMask: PHYSICS.cup.mask,
+      collisionFilterGroup: PHYSICS.cup.group,
+      type: PHYSICS.cup.type,
       emitCollisionEvents: true,
       disableCollision: false,
     });

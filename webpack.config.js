@@ -1,4 +1,5 @@
 const path = require("path");
+const PHYSICS = require('./src/constants/physics.js');
 
 module.exports = {
   entry: "./src/index.js",
@@ -26,6 +27,7 @@ module.exports = {
             options: {
               globals: {
                 IS_PRODUCTION: process.env.NODE_ENV === "production",
+                PHYSICS: PHYSICS
               },
               path: path.resolve(__dirname, "src"),
             },

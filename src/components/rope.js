@@ -1,25 +1,23 @@
-const PHYSICS = {
-  BODY: "ammo-body",
-  SHAPE: "ammo-shape",
-  CONSTRAINT: "ammo-constraint",
-};
+const PHYSICS = require('../constants/physics.js');
 
 const getConfig = (ropeContainerId) => {
   return {
     SEGMENT: {
       idPrefix: ropeContainerId + "-segment",
       radius: "0.02",
-      collisionFilterGroup: "2",
-      collisionFilterMask: "2",
       disableCollision: "true",
+      collisionFilterGroup: PHYSICS.ropeSegment.group,
+      collisionFilterMask: PHYSICS.ropeSegment.mask,
+      type: PHYSICS.ropeSegment.type,
       getLinearDamping: (_segmentNumber) => 0.2,
       color: "white",
     },
     BALL: {
       idPrefix: ropeContainerId + "-ball",
       radius: "0.05",
-      collisionFilterGroup: "1",
-      collisionFilterMask: "5",
+      collisionFilterGroup: PHYSICS.ball.group,
+      collisionFilterMask: PHYSICS.ball.mask,
+      type: PHYSICS.ball.type,
       disableCollision: "false",
       getLinearDamping: (_segmentNumber) => 0.2,
       color: "pink",
@@ -33,19 +31,22 @@ AFRAME.registerComponent("rope", {
   },
   init: function () {
     this.ballEl = null;
-    this.initRope(this.data.ropeLength);
   },
 
   update: function (oldData) {
     if (
+      oldData.enabled !== this.data.enabled || (
       oldData.ropeLength !== undefined &&
       oldData.ropeLength !== this.data.ropeLength
-    ) {
-      while (this.el.firstChild) {
-        // This seems like overkill
-        this.el.removeChild(this.el.lastChild);
-      }
-      this.initRope(this.data.ropeLength);
+    )) {
+        while (this.el.firstChild) {
+          // This seems like overkill
+          this.el.removeChild(this.el.lastChild);
+        }
+        if(this.data.enabled) {
+          console.log("INIT ROPE", this.data)
+          this.initRope(this.data.ropeLength);
+        }
     }
   },
 
@@ -88,16 +89,17 @@ AFRAME.registerComponent("rope", {
     const collisionFilterGroup = config.collisionFilterGroup;
     const collisionFilterMask = config.collisionFilterMask;
     const disableCollision = config.disableCollision;
+    const type = config.type;
     el.setAttribute(
-      PHYSICS.CONSTRAINT,
+      "ammo-constraint",
       `target: #${target}; type: hinge; pivot: 0 0.10 0`
     );
     el.setAttribute(
-      PHYSICS.BODY,
-      `disableCollision: ${disableCollision}; collisionFilterGroup: ${collisionFilterGroup}; collisionFilterMask: ${collisionFilterMask}; linearDamping:  ${linearDamping}; mass: 1; type: dynamic; activationState: disableDeactivation;`
+      "ammo-body",
+      `disableCollision: ${disableCollision}; collisionFilterGroup: ${collisionFilterGroup}; collisionFilterMask: ${collisionFilterMask}; linearDamping:  ${linearDamping}; mass: 1; type: ${type}; activationState: disableDeactivation;`
     );
     el.setAttribute(
-      PHYSICS.SHAPE,
+      "ammo-shape",
       `fit: manual; type: sphere; sphereRadius: ${sphereRadius}`
     );
   },
