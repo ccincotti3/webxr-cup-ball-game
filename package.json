@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --mode=development --host 0.0.0.0 --progress --port 3000",
+    "start": "webpack-dev-server --mode=development --host 0.0.0.0 --progress --port 9001",
     "deploy": "ghpages",
     "ghpages": "ghpages"
   },

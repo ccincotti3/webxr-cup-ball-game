@@ -13,32 +13,5 @@
         text="value: PLAY;"
       ></a-entity>
     </a-entity>
-
-    <a-entity
-      mixin="flatPanel"
-      geometry="width: .25; height: .125"
-      position="-0.15 -0.3 0"
-      proxy-event="event: click; to: a-scene; as: chooseHandLeft"
-      bind__material="selected: !isRightHand"
-      raycastable
-    >
-      <a-entity mixin="primaryFont" text="value: LEFT;"></a-entity>
-    </a-entity>
-    <a-entity
-      scale="1.3 1.3 1.3"
-      position="0.0 -.2 0"
-      mixin="primaryFont"
-      text="value: HAND;"
-    ></a-entity>
-    <a-entity
-      mixin="flatPanel"
-      geometry="width: .25; height: .125"
-      position="0.15 -.3 0"
-      proxy-event="event: click; to: a-scene; as: chooseHandRight"
-      raycastable
-      bind__material="selected: isRightHand"
-    >
-      <a-entity mixin="primaryFont" text="value: RIGHT;"></a-entity>
-    </a-entity>
   </a-entity>
 </a-entity>

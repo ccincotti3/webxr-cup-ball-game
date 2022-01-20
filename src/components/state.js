@@ -1,24 +1,18 @@
-const MODES = {
-  INTRO: "intro",
-  GAME: "game",
-};
-
-const SECONDS_TO_PLAY = 10;
-const STARTING_ROPE_LENGTH = 5;
+import CONFIG from "../constants/config";
 
 AFRAME.registerState({
   initialState: {
     score: 0,
-    ropeLength: STARTING_ROPE_LENGTH,
-    mode: MODES.INTRO,
+    leftRopeLength: CONFIG.STARTING_ROPE_LENGTH,
+    rightRopeLength: CONFIG.STARTING_ROPE_LENGTH,
+    mode: CONFIG.MODES.INTRO,
     gameOver: true,
     timeStart: 0,
     timeElapsed: 0,
-    timeRemaining: SECONDS_TO_PLAY,
-    isRightHand: true,
+    timeRemaining: CONFIG.SECONDS_TO_PLAY,
 
     controllerConnected: false,
-    showCupController: false,
+    showCup: false,
 
     // game modes
     isIntro: true,
@@ -28,8 +22,17 @@ AFRAME.registerState({
   },
 
   handlers: {
-    increaseScore: function (state, action) {
-      state.score += 1;
+    rightPlaneHit: function (state) {
+      state.score++;
+      if (state.rightRopeLength < CONFIG.MAX_ROPE_LENGTH) {
+        state.rightRopeLength++;
+      }
+    },
+    leftPlaneHit: function (state) {
+      state.score++;
+      if (state.leftRopeLength < CONFIG.MAX_ROPE_LENGTH) {
+        state.leftRopeLength++;
+      }
     },
     setGameMode: function (state, action) {
       state.mode = action.mode;
@@ -38,20 +41,16 @@ AFRAME.registerState({
       state.timeElapsed = action.elapsed;
     },
     startGame: function (state) {
-      state.mode = MODES.GAME;
+      state.mode = CONFIG.MODES.GAME;
       state.gameOver = false;
       state.score = 0;
       state.timeStart = state.timeElapsed;
-      state.timeRemaining = SECONDS_TO_PLAY;
+      state.timeRemaining = CONFIG.SECONDS_TO_PLAY;
+      state.leftRopeLength = CONFIG.STARTING_ROPE_LENGTH;
+      state.rightRopeLength = CONFIG.STARTING_ROPE_LENGTH;
     },
     enableControllerControls: function (state) {
       state.controllerConnected = true;
-    },
-    chooseHandLeft: function (state) {
-      state.isRightHand = false;
-    },
-    chooseHandRight: function (state) {
-      state.isRightHand = true;
     },
   },
   computeState: function (newState, payload) {
@@ -59,14 +58,14 @@ AFRAME.registerState({
       newState.gameOver || newState.timeRemaining <= 0
         ? 0
         : Math.floor(
-            SECONDS_TO_PLAY - (newState.timeElapsed - newState.timeStart) / 1000
+            CONFIG.SECONDS_TO_PLAY -
+              (newState.timeElapsed - newState.timeStart) / 1000
           );
     newState.gameOver = newState.gameOver || newState.timeRemaining <= 0;
 
     // set mode
-    newState.isIntro = newState.mode === MODES.INTRO;
-    newState.isGame = newState.mode === MODES.GAME;
-    newState.showCupController = !newState.gameOver;
-    newState.ropeLength = newState.score + STARTING_ROPE_LENGTH
+    newState.isIntro = newState.mode === CONFIG.MODES.INTRO;
+    newState.isGame = newState.mode === CONFIG.MODES.GAME;
+    newState.showCup = !newState.gameOver;
   },
 });

@@ -1,11 +1,11 @@
 <a-scene
   timer
   environment="preset: forest; dressingAmount: 500"
-  physics="driver: ammo;"
+  physics="driver: ammo; debug: true"
   renderer="antialias: true"
   bind__debug="debugOn"
   cursor="rayOrigin: mouse"
-  raycaster="far: 5; objects: [raycastable];"
+  raycaster="far: 5; objects: [raycastable]"
   bind__raycaster="enabled: !controllerConnected"
 >
   <a-assets>
@@ -16,47 +16,59 @@
 
   <a-entity id="rig" movement-controls>
     <a-entity id="player" camera position="0 1.6 0" look-controls></a-entity>
-    {% macro enableCup(hand) %}showCupController && (('{{hand}}' === 'right' && isRightHand) || ('{{hand}}' === 'left' && !isRightHand)){% endmacro %}
-    {% macro enableRaycaster() %}!showCupController && controllerConnected{% endmacro %}
-    {% macro createHand(hand) %}
+    {% macro raycasterEnabled() %}!showCup && controllerConnected{% endmacro %}
+    {% macro createRopeLink(i, hand) %}
     <a-entity
-      id="{{hand}}Hand"
+      mixin="link"
+      id="{{hand}}{{SELECTORS.objs.link}}-{{i}}"
+      bind__visible="{{hand}}RopeLength > {{ i }}"
+    ></a-entity>
+    {% endmacro %} {% macro createHand(thisHand) %}
+    <a-entity
+      id="{{thisHand}}Hand"
       position="0 1 0"
       controller
       cursor="rayOrigin: entity"
       raycaster="far: 5; objects: [raycastable];"
-      bind__raycaster="showLine: {{ enableRaycaster() }}; enabled: {{ enableRaycaster() }}"
-      laser-controls="model: false; hand:{{hand}}"
+      bind__raycaster="showLine: {{ raycasterEnabled() }}; enabled: {{ raycasterEnabled() }}"
+      laser-controls="model: false; hand:{{thisHand}}"
       haptics="events: mouseenter, triggerdown, collidestart; dur: 35; force: 0.075"
     >
-      <a-box
-        scale="0.1 0.1 0.1"
-        id="cursorMesh{{hand}}"
-        bind__visible="!({{ enableCup(hand) }})"
-        ammo-body="disableCollision: {{ enableCup(hand) }}; type: {{PHYSICS.hand.type}}; emitCollisionEvents: true; collisionFilterMask: {{PHYSICS.hand.mask}}; collisionFilterGroup: {{PHYSICS.hand.mask}};"
-        ammo-shape
-        
-      >
-      </a-box>
-      <a-gltf-model
-        bind__cup="enabled: {{ enableCup(hand) }}"
-        id="{{hand}}CupTop"
-        src="#cup-top-obj"
-      >
-        <a-plane
-          proxy-event="event: collidestart; to: a-scene; as: increaseScore"
-          id="{{hand}}HitPlane"
-          scale=".03 .03 .03"
-          rotation="-90 0 0"
-          ammo-body="type: {{PHYSICS.hitPlane.type}}; emitCollisionEvents: true; collisionFilterMask: {{PHYSICS.hitPlane.mask}}; collisionFilterGroup: {{PHYSICS.hitPlane.group}};"
-          ammo-shape
+      <a-entity bind__visible="!showCup">
+        <a-box scale="0.1 0.1 0.1" id="{{thisHand}}{{SELECTORS.objs.hand}}">
+        </a-box>
+      </a-entity>
+      <a-entity bind__visible="showCup">
+        <a-gltf-model
+          bind__cup="enabled: showCup"
+          id="{{thisHand}}CupTop"
+          src="#cup-top-obj"
         >
-        </a-plane>
-        <a-entity
-          id="{{hand}}Rope"
-          bind__rope="enabled: {{ enableCup(hand) }}; ropeLength: ropeLength"
-        ></a-entity>
-      </a-gltf-model>
+          <a-box
+            target
+            proxy-event="event: collidestart; to: a-scene; as: {{thisHand}}PlaneHit"
+            collidable-visible="type: hitPlane"
+            bind__collidable-visible="enabled: showCup"
+            id="{{thisHand}}HitPlane"
+            scale=".03 .03 .03"
+            rotation="-90 0 0"
+          >
+          </a-box>
+          <a-entity
+            id="{{thisHand}}{{SELECTORS.objs.rope}}"
+            bind__rope="enabled: showCup; ropeLength: {{thisHand}}RopeLength"
+          >
+            {% for i in range(0, 10) %} {{ createRopeLink(i, thisHand) }} {%
+            endfor %}
+          </a-entity>
+          <a-entity
+            id="{{thisHand}}{{SELECTORS.objs.ball}}"
+            bind__ball="ropeLength: {{thisHand}}RopeLength"
+            ball="target: #{{thisHand}}{{SELECTORS.objs.link}};"
+            mixin="ball"
+          ></a-entity>
+        </a-gltf-model>
+      </a-entity>
     </a-entity>
     {% endmacro %} {{ createHand("right") }} {{ createHand("left") }}
   </a-entity>
