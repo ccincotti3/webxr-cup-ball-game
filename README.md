@@ -4,6 +4,8 @@ This is an open source game that may be able to serve as an example of how to cr
 ![capture](https://user-images.githubusercontent.com/24990748/150541313-6f660101-6b41-4d6a-bb74-a9ccaef63662.png)
 
 ## Gameplay
+[Click here to play](https://ccincotti3.github.io/webxr-cup-ball-game/) or visit https://ccincotti3.github.io/webxr-cup-ball-game/
+
 Press 'PLAY' to start. Your controllers will turn into two cups. Score points by getting the balls into the cup. That's it!
 
 ![gameplay](https://user-images.githubusercontent.com/24990748/150544845-f103c971-9883-44da-8fe0-9065dafc47f1.gif)
