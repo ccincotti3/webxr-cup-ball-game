@@ -31,7 +31,7 @@ AFRAME.registerState({
         state.rightRopeLength++;
       }
     },
-    leftPlaneHit: function (state) {
+    leftPlaneHit: function (state, evt) {
       if (evt.targetEl.id !== "leftBall") {
         return;
       }

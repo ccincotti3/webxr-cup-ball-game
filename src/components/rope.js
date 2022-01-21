@@ -6,17 +6,15 @@ AFRAME.registerComponent("rope", {
     enabled: { type: "boolean", default: false },
   },
   init: function () {
+    this.setLinkPhysics = this.setLinkPhysics.bind(this);
     this.initRope();
   },
 
   update: function (oldData) {
     if (this.data.enabled && oldData.ropeLength !== this.data.ropeLength) {
-      const i = this.data.ropeLength - 1;
-      if (i < 10) {
+      for (let i = 0; i < this.el.children.length; i++) {
         const c = this.el.children[i];
-        c.setAttribute("ammo-constraint", {
-          pivot: "0 0.10 0",
-        });
+        this.setLinkPhysics(c, i);
       }
     }
   },
@@ -37,10 +35,22 @@ AFRAME.registerComponent("rope", {
       c.setAttribute("ammo-constraint", {
         target: "#" + lastId,
         type: "hinge",
-        pivot: i < this.data.ropeLength ? "0 0.10 0" : "0 0 0",
+        pivot: "0 0.10 0",
       });
 
       lastId = c.id;
     }
+  },
+
+  setLinkPhysics: function (link, linkIndex) {
+    console.log(linkIndex);
+    link.setAttribute("ammo-body", {
+      linearDamping: linkIndex < this.data.ropeLength ? "0.2" : "0.01",
+      angularDamping: linkIndex < this.data.ropeLength ? "0.01" : "0",
+    });
+
+    link.setAttribute("ammo-constraint", {
+      pivot: linkIndex < this.data.ropeLength ? "0 0.10 0" : "0 0 0",
+    });
   },
 });
