@@ -2,15 +2,19 @@
   "name": "webxr-cup-ball-game",
   "description": "A WebXR game for some fun Cup & Ball",
   "version": "1.0.0",
-  "homepage": "https://github.com/ccincotti3/webxr-cup-ball-game",
+  "repository": {
+    "url": "https://github.com/ccincotti3/webxr-cup-ball-game/"
+  },
+  "homepage": "https://ccincotti3.github.io/cupball",
   "author": {
     "name": "Carmen Cincotti",
     "url": "https://github.com/ccincotti3"
   },
   "scripts": {
+    "build": "cross-env NODE_ENV=production webpack",
     "start": "webpack-dev-server --mode=development --host 0.0.0.0 --progress --port 9001",
-    "deploy": "ghpages",
-    "ghpages": "ghpages"
+    "predeploy": "npm run build && cp -r public build",
+    "deploy": "ghpages -d build"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
@@ -18,6 +22,7 @@
     "aframe-super-hot-html-loader": "^2.1.0",
     "aframe-super-hot-loader": "^1.7.0",
     "babel-loader": "^8.2.3",
+    "cross-env": "^7.0.3",
     "diff-dom": "^4.2.3",
     "ghpages": "^0.0.10",
     "html-require-loader": "^1.0.1",
