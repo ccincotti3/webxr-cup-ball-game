@@ -43,7 +43,6 @@ AFRAME.registerComponent("rope", {
   },
 
   setLinkPhysics: function (link, linkIndex) {
-    console.log(linkIndex);
     link.setAttribute("ammo-body", {
       linearDamping: linkIndex < this.data.ropeLength ? "0.2" : "0.01",
       angularDamping: linkIndex < this.data.ropeLength ? "0.01" : "0",

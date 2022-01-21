@@ -1,8 +1,12 @@
 {
-  "name": "aframe-hello-world-boilerplate",
-  "description": "Boilerplate with A-Frame's 'Hello, World!' of WebVR.",
+  "name": "webxr-cup-ball-game",
+  "description": "A WebXR game for some fun Cup & Ball",
   "version": "0.3.0",
-  "license": "MIT",
+  "homepage": "https://github.com/ccincotti3/webxr-cup-ball-game",
+  "author": {
+    "name": "Carmen Cincotti",
+    "url": "https://github.com/ccincotti3"
+  },
   "scripts": {
     "start": "webpack-dev-server --mode=development --host 0.0.0.0 --progress --port 9001",
     "deploy": "ghpages",
