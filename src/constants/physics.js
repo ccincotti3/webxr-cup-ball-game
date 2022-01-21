@@ -16,7 +16,7 @@ const PHYSICS = {
   },
   cup: {
     group: 4,
-    mask: 1 + 2 + 4,
+    mask: 1 + 2,
     type: TYPES.KINEMATIC,
   },
   hand: {

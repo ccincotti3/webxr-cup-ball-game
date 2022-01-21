@@ -1,9 +1,9 @@
 <!-- ASSET ITEMS -->
-<a-asset-item id="cup-top-obj" src="assets/cup_top.gltf"></a-asset-item>
+<a-asset-item id="cup-top-obj" src="assets/models/cup.gltf"></a-asset-item>
 
 <!-- IMG ITEMS -->
 <!-- Textures need to be image tags !-->
-<!-- <img id="button-texture" src="assets/wood.png"></img> -->
+<img id="logo" src="assets/images/logo.png"></img>
 
 <!-- MIXINS -->
 <a-mixin
@@ -34,5 +34,12 @@
   material="color: red"
 ></a-mixin>
 
-<!-- ammo-constraint="type: hinge; pivot: 0 0.10 0" -->
-<!-- ammo-constraint="type: hinge; pivot: 0 0.10 0" -->
+<a-mixin
+  id="hitPlane"
+  geometry="primitive: plane"
+  scale="0.01 0.01"
+  rotation="-90 0 0"
+  ammo-body="disableCollision: true; emitCollisionEvents: true; collisionFilterGroup: {{ PHYSICS.hitPlane.group }}; collisionFilterMask: {{ PHYSICS.hitPlane.mask }}; type: {{ PHYSICS.hitPlane.type }};"
+  ammo-shape
+  visible="false"
+></a-mixin>

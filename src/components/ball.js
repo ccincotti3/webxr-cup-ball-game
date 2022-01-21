@@ -5,7 +5,9 @@ AFRAME.registerComponent("ball", {
     ropeLength: { type: "number", default: CONFIG.STARTING_ROPE_LENGTH },
     target: { type: "string", default: "" },
   },
-  init: function () {},
+  init: function () {
+    this.setTarget();
+  },
 
   update(oldData) {
     if (oldData.ropeLength !== this.data.ropeLength) {
@@ -19,6 +21,5 @@ AFRAME.registerComponent("ball", {
       type: "hinge",
       pivot: "0 0.10 0",
     });
-    console.log(this.el.getAttribute("ammo-constraint"));
   },
 });

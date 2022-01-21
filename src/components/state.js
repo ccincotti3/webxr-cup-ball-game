@@ -22,13 +22,19 @@ AFRAME.registerState({
   },
 
   handlers: {
-    rightPlaneHit: function (state) {
+    rightPlaneHit: function (state, evt) {
+      if (evt.targetEl.id !== "rightBall") {
+        return;
+      }
       state.score++;
       if (state.rightRopeLength < CONFIG.MAX_ROPE_LENGTH) {
         state.rightRopeLength++;
       }
     },
     leftPlaneHit: function (state) {
+      if (evt.targetEl.id !== "leftBall") {
+        return;
+      }
       state.score++;
       if (state.leftRopeLength < CONFIG.MAX_ROPE_LENGTH) {
         state.leftRopeLength++;
@@ -37,6 +43,7 @@ AFRAME.registerState({
     setGameMode: function (state, action) {
       state.mode = action.mode;
     },
+    // This is lazy and I'm not sure the best way to handle time
     setTimeElapsed: function (state, action) {
       state.timeElapsed = action.elapsed;
     },
@@ -57,7 +64,7 @@ AFRAME.registerState({
     newState.timeRemaining =
       newState.gameOver || newState.timeRemaining <= 0
         ? 0
-        : Math.floor(
+        : Math.ceil(
             CONFIG.SECONDS_TO_PLAY -
               (newState.timeElapsed - newState.timeStart) / 1000
           );

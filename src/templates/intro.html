@@ -1,8 +1,11 @@
 <a-entity bind__visible="isIntro">
-  <a-entity position="0 1.6 -1">
+  <a-entity position="0 1.8 -1.8">
+    <a-image width="2.51" height="1.8" src="#logo"></a-image>
+  </a-entity>
+  <a-entity position="0 .8 -1.4">
     <a-entity
       mixin="flatPanel"
-      geometry="width: .75; height: .375"
+      geometry="width: .7; height: .37"
       position="0 .1 0"
       proxy-event="event: click; to: a-scene; as: startGame"
       raycastable

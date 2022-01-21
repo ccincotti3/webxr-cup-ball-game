@@ -1,7 +1,7 @@
 <a-scene
   timer
   environment="preset: forest; dressingAmount: 500"
-  physics="driver: ammo; debug: true"
+  physics="driver: ammo;"
   renderer="antialias: true"
   bind__debug="debugOn"
   cursor="rayOrigin: mouse"
@@ -40,18 +40,16 @@
       </a-entity>
       <a-entity bind__visible="showCup">
         <a-gltf-model
-          bind__cup="enabled: showCup"
+          cup
+          bind__visible="showCup"
+          material="side: double"
           id="{{thisHand}}CupTop"
           src="#cup-top-obj"
         >
           <a-box
-            target
-            proxy-event="event: collidestart; to: a-scene; as: {{thisHand}}PlaneHit"
-            collidable-visible="type: hitPlane"
-            bind__collidable-visible="enabled: showCup"
+            mixin="hitPlane"
             id="{{thisHand}}HitPlane"
-            scale=".03 .03 .03"
-            rotation="-90 0 0"
+            proxy-event="event: collidestart; to: a-scene; as: {{thisHand}}PlaneHit"
           >
           </a-box>
           <a-entity

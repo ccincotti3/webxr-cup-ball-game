@@ -29,7 +29,7 @@ AFRAME.registerComponent("rope", {
       const c = this.el.children[i];
 
       // This is the best way to handle this. All targets and objects
-      // need to be rendered otherwise when adding things to the DOM 
+      // need to be rendered otherwise when adding things to the DOM
       // on the fly, weird physics happens.
 
       // The trick is to set the target on everything, the type, and change the pivot
