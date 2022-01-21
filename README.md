@@ -1,4 +1,4 @@
-# Cup & Ball Saga
+# Cup & Ball Saga - VR Game
 This is an open source game that may be able to serve as an example of how to create a game in WebXR. 
 
 ![capture](https://user-images.githubusercontent.com/24990748/150541313-6f660101-6b41-4d6a-bb74-a9ccaef63662.png)
@@ -22,6 +22,7 @@ Before submitting code, please run `npx prettier --write .`
 - Scoreboard
 - New game modes
 - Sounds
+- Tests
 
 ### Special Thanks
 Thank you to team [@supermedium](https://github.com/supermedium) for providing source code for their game [Moonrider](https://github.com/supermedium/moonrider) which served as a valuable reference. Also, big thanks to that team for the plugins that they develop.
